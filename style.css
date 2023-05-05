@@ -1,0 +1,94 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+canvas{
+    border: 1px solid black;
+    margin-right: 40px;
+}
+
+.contenedor{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.botones{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 10%;
+    left: 10px;
+}
+
+.btn-funcionalidad{
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-filtro{
+    width: 90px;
+    border-radius: 50px;
+}
+
+.iconos{
+    width: 70%;
+    height: 70%;
+}
+
+label .iconos{
+    width: 40px;
+    height: 40px;
+}
+
+#labelFile{
+    border: 1px solid rgba(46, 46, 46, 0.536);
+    margin: 10px;
+    cursor: pointer;
+}
+
+#file{
+    display: none;
+}
+
+.tamano-pen{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.aumentar, .disminuir{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.pen-size{
+    appearance: none;
+    width: 30px;
+    height: 20px;
+    border-radius: 10px;
+    padding-left: 10px;
+}
+
+input::-webkit-inner-spin-button {
+   
+    appearance: none;
+    margin: 0; 
+}
+
+#inputColor{
+    cursor: pointer;
+}

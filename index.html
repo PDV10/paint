@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="main()">
+    <div class="contenedor">
+            
+        <div class="botones">
+            <label for="file" id="labelFile"><img class="iconos" src="iconos/file.png" alt="file"></label>
+            <input type="file" id="file">
+            <input type="color" id="inputColor">
+            <button class="btn-funcionalidad" id="pen"> <img class="iconos" src="iconos/lapiz.png" alt="lapiz"></button>
+                <div class="tamano-pen"> 
+                    <button class="disminuir">-</button>
+                    <input class="pen-size" type="number" value="10">
+                    <button class="aumentar">+</button>
+                </div>
+            
+            <button class="btn-funcionalidad" id="borrar"> <img class="iconos" src="iconos/goma-de-borrar.png" alt="goma"></button>
+            <button class="btn-funcionalidad" id="limpiar"> <img class="iconos" src="iconos/limpiar.png" alt="limpiar"></button>
+            <button class="btn-funcionalidad" id="guardar"> <img class="iconos" src="iconos/guardar.png" alt="guardar"></button>
+            <button class="btn-funcionalidad btn-filtro" id="filtroNegativo"> filtroNegativo</button>
+            <button class="btn-funcionalidad btn-filtro" id="filtroBrillo"> filtroBrillo</button>
+            <button class="btn-funcionalidad btn-filtro" id="filtroByn"> filtro ByN</button>
+            <button class="btn-funcionalidad btn-filtro" id="filtroSepia"> filtro Sepia</button>
+            <button class="btn-funcionalidad btn-filtro" id="filtroX"> filtroX</button>
+        </div>
+        <div class="div-canvas">   
+            <canvas id="canvas" width="1700px" height="800px" ></canvas>
+        </div>
+    </div>
+</body>
+<script src="js/lapiz.js"></script>
+<script src="js/main.js"></script>
+</html>
