@@ -108,11 +108,8 @@ file.addEventListener("change", cargarImagen);
 function cargarImagen(e){
     imagen = new Image();
     imagen.src = URL.createObjectURL(e.target.files[0]);
-   /*  imgWidth = e.target.files[0].width;
-    imgHeight = e.target.files[0].height; */
     
     imagen.onload = function(){
-        console.log(imagen);
         ctx.drawImage(this, 0 ,0,canvasWidth,canvasHeight);
     }
 }
@@ -122,9 +119,7 @@ function main(){
     ctx.fillRect(0,0,canvasWidth,canvasHeight);
 }
 
-// filtros 
-
-
+// filtro negativo
 let filtroNegativo = document.getElementById("filtroNegativo");
 filtroNegativo.addEventListener('click', negativo);
 
@@ -133,9 +128,7 @@ function negativo(){
     let pixel = imageData.data;
     for (let i = 0; i < pixel.length; i+=4) {
         pixel[i ] = 255 - pixel[i]; // r
-        
         pixel[i + 1] = 255 - pixel[i+1]; // g
-        
         pixel[i+2] = 255 - pixel[i+2]; // b
         
     }
@@ -144,6 +137,7 @@ function negativo(){
     
 }
 
+// filtro aumentar brillo
 let filtroBrillo = document.getElementById("filtroBrillo");
 filtroBrillo.addEventListener('click', filtroDeBrillo);
 
@@ -160,10 +154,12 @@ function filtroDeBrillo(){
     }
 }
 
-let filtroByN = document.getElementById("filtroByn");
-filtroByN.addEventListener('click', filtroBlancoYnegro);
 
-function filtroBlancoYnegro(){
+// filtro grices
+let filtroGris = document.getElementById("filtroGris");
+filtroGris.addEventListener('click', filtroGrices);
+
+function filtroGrices(){
     let imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
     let pixel = imageData.data;
     for (let i = 0; i < pixel.length; i++) {
@@ -172,17 +168,16 @@ function filtroBlancoYnegro(){
         let b =  pixel[i * 4 + 2];
         let promedio = ((r+g+b)/3);
         pixel[i * 4] =  promedio; // r
-        
         pixel[i * 4 + 1] = promedio; // g
-        
         pixel[i * 4 + 2] = promedio; // b
         
     }
     if(imagen != null)
     ctx.putImageData(imageData, 0,0);
-    
 }
 
+
+// filtro sepia
 let filtroSepia = document.getElementById("filtroSepia");
 filtroSepia.addEventListener('click', filtroDeSepia);
 
@@ -202,6 +197,34 @@ function filtroDeSepia(){
     ctx.putImageData(imageData, 0,0);
 }
 
+
+//filtro binarizacion
+let filtroBinarizacion = document.getElementById("filtroBinarizacion");
+filtroBinarizacion.addEventListener('click', filtroDeBinarizacion);
+
+function filtroDeBinarizacion(){
+    let imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+    let pixel = imageData.data;
+    for (let i = 0; i < pixel.length; i++) {
+        let r =   pixel[i * 4];
+        let g =   pixel[i * 4 + 1];
+        let b =  pixel[i * 4 + 2];
+        let promedio = ((r+g+b)/3);
+        if(promedio > 128){
+            pixel[i * 4] = 255;
+            pixel[i * 4 + 1] = 255;
+            pixel[i * 4 + 2] = 255;
+        }else{
+            pixel[i * 4] = 0;
+            pixel[i * 4 + 1] = 0;
+            pixel[i * 4 + 2] = 0;
+          }
+    }
+    if(imagen != null)
+    ctx.putImageData(imageData, 0,0);
+    }
+
+// filtro
 let filtroX = document.getElementById("filtroX");
 filtroX.addEventListener('click', filtro);
 
@@ -212,10 +235,10 @@ function filtro(){
         let r =   pixel[i * 4];
         let g =   pixel[i * 4 + 1];
         let b =  pixel[i * 4 + 2];
-        let pre = (Math.max(r,g,b));
-        pixel[i * 4] = r*pre;
-        pixel[i * 4+2] =g*pre; 
-        pixel[i * 4+2] =b*pre;
+        let promedio = (Math.max(r,g,b));
+        pixel[i * 4] = r*promedio;
+        pixel[i * 4+2] =g*promedio; 
+        pixel[i * 4+2] =b*promedio;
         
     }
     if(imagen != null)
