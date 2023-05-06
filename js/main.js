@@ -12,7 +12,7 @@ let mouseUp = true;
 let mouseDown = false;
 let inputColor = document.getElementById("inputColor");
 let MiLapiz = null;
-let imagen = null;
+let miImagen = null;
 let file = document.getElementById("file");
 let penSize = document.querySelector(".pen-size");
 let btnAumentar = document.querySelector(".aumentar");
@@ -103,16 +103,11 @@ document.getElementById("guardar").addEventListener("click", (e)=>{
 }) 
 
 //cargar imagen
-file.addEventListener("change", cargarImagen);
+file.addEventListener("change", e=>{
+    miImagen = new MyImagen(ctx,canvasWidth,canvasHeight)
+    miImagen.cargarImagen(e);
+});
 
-function cargarImagen(e){
-    imagen = new Image();
-    imagen.src = URL.createObjectURL(e.target.files[0]);
-    
-    imagen.onload = function(){
-        ctx.drawImage(this, 0 ,0,canvasWidth,canvasHeight);
-    }
-}
 
 function main(){
     ctx.fillStyle = 'white';  
@@ -121,21 +116,11 @@ function main(){
 
 // filtro negativo
 let filtroNegativo = document.getElementById("filtroNegativo");
-filtroNegativo.addEventListener('click', negativo);
+filtroNegativo.addEventListener('click', e=>{
+    miImagen.negativo();
+});
 
-function negativo(){
-    let imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-    let pixel = imageData.data;
-    for (let i = 0; i < pixel.length; i+=4) {
-        pixel[i ] = 255 - pixel[i]; // r
-        pixel[i + 1] = 255 - pixel[i+1]; // g
-        pixel[i+2] = 255 - pixel[i+2]; // b
-        
-    }
-    if(imagen != null)
-    ctx.putImageData(imageData, 0,0);
-    
-}
+
 
 // filtro aumentar brillo
 let filtroBrillo = document.getElementById("filtroBrillo");
