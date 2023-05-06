@@ -13,6 +13,7 @@ let mouseDown = false;
 let inputColor = document.getElementById("inputColor");
 let MiLapiz = null;
 let miImagen = null;
+let imgAnt = null;
 let file = document.getElementById("file");
 let penSize = document.querySelector(".pen-size");
 let btnAumentar = document.querySelector(".aumentar");
@@ -90,7 +91,7 @@ document.getElementById("borrar").addEventListener("click", (e)=>{
 // boton limpiar canvas
 document.getElementById("limpiar").addEventListener("click", (e)=>{
     main();
-   /*  imagen = null; */
+    imgAnt = null; 
 }) 
 
 //boton guardar
@@ -102,10 +103,12 @@ document.getElementById("guardar").addEventListener("click", (e)=>{
     main();
 }) 
 
+
 //cargar imagen
 file.addEventListener("change", e=>{
-    miImagen = new MyImagen(ctx,canvasWidth,canvasHeight)
+    miImagen = new MyImagen(ctx,canvasWidth,canvasHeight,null,null)
     miImagen.cargarImagen(e);
+    imgAnt = miImagen;
 });
 
 // iniciar canvas de blanco
@@ -114,38 +117,13 @@ function main(){
     ctx.fillRect(0,0,canvasWidth,canvasHeight);
 }
 
-// filtro negativo
-let filtroNegativo = document.getElementById("filtroNegativo");
-filtroNegativo.addEventListener('click', e=>{
-    miImagen.negativo();
-});
-
-// filtro aumentar brillo
-let filtroBrillo = document.getElementById("filtroBrillo");
-filtroBrillo.addEventListener('click', e=>{
-    miImagen.filtroDeBrillo();
-});
-
-// filtro grices
-let filtroGris = document.getElementById("filtroGris");
-filtroGris.addEventListener('click', e=>{
-    miImagen.filtroGrices();
-});
-
-// filtro sepia
-let filtroSepia = document.getElementById("filtroSepia");
-filtroSepia.addEventListener('click', e=>{
-    miImagen.filtroDeSepia();
-});
-
-//filtro binarizacion
-let filtroBinarizacion = document.getElementById("filtroBinarizacion");
-filtroBinarizacion.addEventListener('click', e=>{
-    miImagen.filtroDeBinarizacion()
-});
-
-// filtro Test
-let filtroX = document.getElementById("filtroX");
-filtroX.addEventListener('click', e=>{
-    miImagen.filtro();
+// aplicar filtro
+let filtros = document.querySelectorAll(".btn-filtro");
+filtros.forEach(filtro => {
+    filtro.addEventListener("click", e=>{
+        let filtroID = filtro.id;
+        if(imgAnt){
+            miImagen.aplicarFiltro(filtroID);
+        }
+    })
 });
