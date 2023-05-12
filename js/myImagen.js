@@ -18,45 +18,40 @@ class MyImagen{
         // obtengo los valores originales de width y height antes de cargar la imagen
         let origWidth = this.width;
         let origHeight = this.height;
-        
        
         let imagen = new Image();
         imagen.src = URL.createObjectURL(e.target.files[0]);
       
         imagen.onload = function(){
         
-        // guardo los valores originales del width y height del canvas 
-        let canvasWidth = origWidth;
-        let canvasHeight = origHeight;
-        // obtengo los valores de width y height de la nueva imagen cargada
-        let imgWidth = imagen.width;
-        let imgHeight = imagen.height;
-        // seteo variables vacias
-        let newWidth = null;
-        let newHeight = null;
-        let ratio = null;
-        let newX = null;
-        let newY = null;
-        let xImgActual;
-        let yImgActual;
-        let widthImgActual;
-        let heightImgAcual;
-            
-            // si la imagan es mas alta o mas ancha que el canvas entro al if sino entro al else
+            // guardo los valores originales del width y height del canvas 
+            let canvasWidth = origWidth;
+            let canvasHeight = origHeight;
+            // obtengo los valores de width y height de la nueva imagen cargada
+            let imgWidth = imagen.width;
+            let imgHeight = imagen.height;
+            // seteo variables vacias
+            let newWidth = null;
+            let newHeight = null;
+            let ratio = null;
+            let newX = 0;
+            let newY = 0;
+            let xImg;
+            let yImg;
+
+            // si la imagen es mas alta o mas ancha que el canvas entro al if sino entro al else
             if(imgWidth >= canvasWidth || imgHeight >= canvasHeight){
                 // si la imagen es horizontal (mas ancha que alta) entro al if sino entro al else
-                if(imgWidth> imgHeight){ 
+                if(imgWidth > imgHeight){ 
                     ratio = imgWidth/canvasWidth;
                     newWidth = imgWidth/ratio;
                     newHeight = imgHeight/ratio;
-                    newX = 0;
                     newY = ((canvasHeight- imgHeight)/ 2 );
                 }else{
                     ratio = imgHeight / canvasHeight;
                     newWidth = imgWidth/ratio;
                     newHeight = imgHeight/ratio;
                     newX =((canvasWidth - imgWidth) /2);
-                    newY = 0;
                 }
           
                 ctx.drawImage(this, newX ,newY,newWidth,newHeight)
@@ -67,67 +62,27 @@ class MyImagen{
                 newY = (canvasHeight- imgHeight) / 2;
                 ctx.drawImage(this, newX ,newY,newWidth,newHeight);
             }
-            /**
-                guardo la imagen en una copia.
-                guardo los valores de:  x, y , width y height
-                de la imagen para poder volvera dibujarla en otro momento si lo necesito
-                */
-               this.xImgActual = newX;
-               this.yImgActual = newY;
-               this.widthImgActual = newWidth;
-               this.heightImgAcual = newHeight;
-            }
-            this.imgActual = imagen;
-    }
-
-    /* -------------------------------------------- filtros ------------------------------------------------------------*/ 
-    // si existe el filtro del id que recibo como parametro llamo a la funcion que corresponda
-    aplicarFiltro(id){
-        // si el ultimo filtro es igual al id que llega por parametro entra al if y quita el filtro que ya esta aplicado
-        // si no es asi, entra al else, fijarse si el id existe como parametro 
-        // y si existe aplicar el filtro y setearlo como ultimo filtro 
-        if(this.ultimoFiltro == id){
-            console.log("entro");
-            this.quitarFiltro();
-        }else{
-            if(id == "filtroNegativo"){
-                this.ultimoFiltro = "filtroNegativo";
-                this.filtroNegativo();
-            }
-            if(id == "filtroBrillo"){
-                this.filtroBrillo();
-            }
-            if(id == "filtroBinarizacion"){
-                this.ultimoFiltro = "filtroBinarizacion";
-                this.filtroBinarizacion();
-            }
-            if(id == "filtroGris"){
-                this.ultimoFiltro = "filtroGris";
-                this.filtroGrices();
-            }
-            if(id == "filtroSepia"){
-                this.ultimoFiltro = "filtroSepia";
-                this.filtroSepia();
-            } 
-            if(id == "quitarFiltro"){
-                this.quitarFiltro();
-            }
-            if(id == "filtroX"){
-                this.filtroX();
-            }            
+            
+            /*  guardo la imagen en una copia.
+                guardo los valores de:  x, y de la imagen en una copia
+                para poder usarlos cuando lo necesite fuera del onload
+            */
+                this.xImg = newX;
+                this.yImg = newY;
         }
+        this.imgActual = imagen;
     }
 
-    // aplico el filtro si la imgActual es != null
+     /*--------------------------------------------------------------- filtros ----------------------------------------------------------------------*/
+    
     agregarFiltro(imageData){
+        // aplico el filtro si la imgActual es != null
         if(this.imgActual) {  
-            ctx.putImageData(imageData, 0,0);
+            ctx.putImageData(imageData, this.imgActual.xImg,this.imgActual.yImg);
         }
     }
 
-    filtroNegativo(){
-        let imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-        let pixel = imageData.data;
+    filtroNegativo(imageData,pixel){
         for (let i = 0; i < pixel.length; i+=4) {
             pixel[i ] = 255 - pixel[i]; // r
             pixel[i + 1] = 255 - pixel[i+1]; // g
@@ -136,9 +91,7 @@ class MyImagen{
         this.agregarFiltro(imageData);
     }
 
-    filtroBrillo(){
-        let imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-        let pixel = imageData.data;
+    filtroBrillo(imageData,pixel){
         for (let i = 0; i < pixel.length; i++) { 
             pixel[i] = pixel[i] +5; // r
             pixel[i + 1] = pixel[i+1]+5; // g
@@ -147,14 +100,13 @@ class MyImagen{
         this.agregarFiltro(imageData);
     }
     
-    filtroGrices(){
-        let imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-        let pixel = imageData.data;
+    filtroGrices(imageData,pixel){
         for (let i = 0; i < pixel.length; i++) {
             let r =   pixel[i * 4];
             let g =   pixel[i * 4 + 1];
             let b =  pixel[i * 4 + 2];
             let promedio = ((r+g+b)/3);
+
             pixel[i * 4] =  promedio; // r
             pixel[i * 4 + 1] = promedio; // g
             pixel[i * 4 + 2] = promedio; // b
@@ -162,9 +114,7 @@ class MyImagen{
         this.agregarFiltro(imageData);
     }
 
-    filtroSepia(){
-        let imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-        let pixel = imageData.data;
+    filtroSepia(imageData,pixel){
         for (let i = 0; i < pixel.length; i++) {
             let r =   pixel[i * 4];
             let g =   pixel[i * 4 + 1];
@@ -176,9 +126,8 @@ class MyImagen{
         }
         this.agregarFiltro(imageData);
     }
-    filtroBinarizacion(){
-        let imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-        let pixel = imageData.data;
+
+    filtroBinarizacion(imageData,pixel){
         for (let i = 0; i < pixel.length; i++) {
             let r =   pixel[i * 4];
             let g =   pixel[i * 4 + 1];
@@ -198,27 +147,109 @@ class MyImagen{
 
     }
 
-    quitarFiltro(){
-        /* console.log("x: " + this.imgActual.xImgActual);
-        console.log("y: " + this.imgActual.yImgActual);
-        console.log("width: " + this.imgActual.widthImgActual);
-        console.log("height: " + this.imgActual.heightImgAcual); */
-       
+    quitarFiltro(){     
         // obtengo los datos de la imagen actual , x,y,width,height y la propia imagen 
         let img = this.imgActual;
-        let x = this.imgActual.xImgActual;
-        let y = this.imgActual.yImgActual;
-        let width = this.imgActual.widthImgActual;
-        let height = this.imgActual.heightImgAcual;
+        let x = this.imgActual.xImg;
+        let y = this.imgActual.yImg;
+        let width = this.imgActual.width;
+        let height = this.imgActual.height;
         
         //vaciar el canvas, setear ultimo filtro como nulo y volver a dibujar la imagen
         this.init();
         this.ultimoFiltro = null;
-        ctx.drawImage(img, x ,y,width,height)
+        ctx.drawImage(img,x,y,width,height)
     }
 
+    /*----------------------------------------------------------- filtros avanzados -------------------------------------------------------------------*/
+    filtroBlur(imageData,input_pixels){
+        let box_kernel = [  [1 / 9, 1 / 9, 1 / 9],
+                            [1 / 9, 1 / 9, 1 / 9],
+                            [1 / 9, 1 / 9, 1 / 9]];
+
+        let gaussian_kernel = [ [1 / 256, 4  / 256,  6 / 256,  4 / 256, 1 / 256],
+                                [4 / 256, 16 / 256, 24 / 256, 16 / 256, 4 / 256],
+                                [6 / 256, 24 / 256, 36 / 256, 24 / 256, 6 / 256],
+                                [4 / 256, 16 / 256, 24 / 256, 16 / 256, 4 / 256],
+                                [1 / 256, 4  / 256,  6 / 256,  4 / 256, 1 / 256]];
+
+        let kernel = box_kernel;
+        let offset = Math.floor((kernel.length) / 2);
+
+        for (let x = offset; x < this.imgActual.width - offset; x++) {
+            for (let y = offset; y < this.imgActual.height - offset; y++) {
+                let acc = [0,0,0];
+                
+                for (let a = 0; a < kernel.length; a++) {
+                    for (let b = 0; b < kernel.length; b++) {
+                        let xn = x + a - offset;
+                        let yn = y + b - offset; 
+                        
+                        const pixel = (xn + yn * this.imgActual.width) * 4;
+
+                        acc[0] += input_pixels[pixel] * kernel[a][b];
+                        acc[1] += input_pixels[pixel + 1] * kernel[a][b];
+                        acc[2] += input_pixels[pixel + 2] * kernel[a][b];
+                      
+                    }
+                }
+                input_pixels[(x + y * this.imgActual.width) * 4] = acc[0];
+                input_pixels[(x + y * this.imgActual.width) * 4 + 1] = acc[1];
+                input_pixels[(x + y * this.imgActual.width) * 4 + 2] = acc[2]; 
+            }
+        }
+        this.agregarFiltro(imageData);
+    }
+
+    filtroBordes(imageData,input_pixels){
+        let kernelx = [ [-1, 0, 1],
+                        [-2, 0, 2],
+                        [-1, 0, 1]];
+
+        let kernely = [ [-1,-2,-1],
+                        [ 0, 0, 0],
+                        [ 1, 2, 1]];
+
+        let intensity = [];
+        for (let x = 0; x < imageData.width; x++) {
+            intensity[x] = [];
+            for (let y = 0; y < imageData.height; y++) {
+                const pixel = ((x + y * this.imgActual.width) * 4); 
+                let r = input_pixels[pixel];
+                let g = input_pixels[pixel + 1];
+                let b = input_pixels[pixel + 2];   
+
+                intensity[x][y] = (r+g+b) / 3;
+            }
+        }
+
+        for (let x = 1; x < this.imgActual.width - 1; x++) {
+            for (let y = 1; y < this.imgActual.height - 1; y++) {
+                let magX = 0;
+                let magY = 0;
+                
+                for (let a = 0; a < 3; a++) {
+                    for (let b = 0; b < 3; b++) {
+                        let xn = x + a - 1;
+                        let yn = y + b - 1; 
+
+                        magX += (intensity[xn][yn] * kernelx[a][b]);
+                        magY += (intensity[xn][yn] * kernely[a][b]);
+                    }
+                }
+                
+                let color = parseInt(Math.sqrt(magX*magX + magY*magY));
+                imageData.data[(x + y * this.imgActual.width) * 4] = color;
+                imageData.data[(x + y * this.imgActual.width) * 4 + 1] = color;
+                imageData.data[(x + y * this.imgActual.width) * 4 + 2] = color; 
+            }
+        }
+        this.agregarFiltro(imageData);
+    }
+
+
     filtroX(){
-             
+
     }
 }
 

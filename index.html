@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport">
-    <title>Document</title>
+    <title>Paint</title>
+    <link rel="shortcut icon" href="iconos/paint.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body onload="main()">
@@ -14,26 +15,34 @@
             <label for="file" id="labelFile"><img class="iconos" src="iconos/file.png" alt="file"></label>
             <input type="file" id="file">
             <input type="color" id="inputColor">
-            <button class="btn-funcionalidad" id="pen"> <img class="iconos" src="iconos/lapiz.png" alt="lapiz"></button>
-                <div class="tamano-pen"> 
-                    <button class="disminuir">-</button>
-                    <input class="pen-size" type="number" value="10">
-                    <button class="aumentar">+</button>
-                </div>
-            
+
+            <button class="btn-funcionalidad" id="pen"> <img class="iconos" src="iconos/lapiz.png" alt="lapiz"></button>    
+            <div class="tamano-pen"> 
+                <button class="disminuir"><img class="iconos" src="iconos/resta.png" alt="resta"></button>
+                <input class="pen-size" type="number" value="10">
+                <button class="aumentar"><img class="iconos" src="iconos/suma.png" alt="suma"></button>
+            </div>
             <button class="btn-funcionalidad" id="borrar"> <img class="iconos" src="iconos/goma-de-borrar.png" alt="goma"></button>
             <button class="btn-funcionalidad" id="limpiar"> <img class="iconos" src="iconos/limpiar.png" alt="limpiar"></button>
-            <button class="btn-funcionalidad" id="guardar"> <img class="iconos" src="iconos/guardar.png" alt="guardar"></button>
-            <button class="btn-funcionalidad btn-filtro" id="filtroNegativo"> filtroNegativo</button>
-            <button class="btn-funcionalidad btn-filtro" id="filtroBrillo"> filtroBrillo</button>
-            <button class="btn-funcionalidad btn-filtro" id="filtroBinarizacion">filtroBinarizacion</button> 
-            <button class="btn-funcionalidad btn-filtro" id="filtroGris"> filtroGris</button>
-            <button class="btn-funcionalidad btn-filtro" id="filtroSepia"> filtroSepia</button>
-            <button class="btn-funcionalidad btn-filtro" id="quitarFiltro"> quitarFiltro</button>
-            <button class="btn-funcionalidad btn-filtro" id="filtroX"> filtroX</button>
+            <button class="btn-funcionalidad" id="guardar"> <img class="iconos" src="iconos/guardar.png" alt="guardar"></button>       
+           
         </div>
+        
+
         <div class="div-canvas">   
             <canvas id="canvas" width="1600px" height="800px" ></canvas>
+            <button class="btn-funcionalidad activarFiltros">Filtros</button>
+            <div class="btnFiltros">
+                <button class="btn-funcionalidad btn-filtro esconder" id="filtroNegativo"> Negativo</button>
+                <button class="btn-funcionalidad btn-filtro esconder" id="filtroBrillo"> Brillo</button>
+                <button class="btn-funcionalidad btn-filtro esconder" id="filtroBinarizacion">Binarizacion</button> 
+                <button class="btn-funcionalidad btn-filtro esconder" id="filtroGris"> Gris</button>
+                <button class="btn-funcionalidad btn-filtro esconder" id="filtroSepia"> Sepia</button>
+                <button class="btn-funcionalidad btn-filtro esconder" id="filtroBlur"> Blur</button>
+                <button class="btn-funcionalidad btn-filtro esconder" id="filtroBordes"> Bordes</button>
+                <button class="btn-funcionalidad btn-filtro esconder" id="filtroX"> Saturacion</button>
+                <button class="btn-funcionalidad btn-filtro esconder" id="quitarFiltro"> quitar Filtro</button>
+            </div>
         </div>
     </div>
 </body>

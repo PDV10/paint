@@ -9,19 +9,29 @@ canvas{
 
 .contenedor{
     display: flex;
-    justify-content: end;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     width: 100vw;
     height: 100vh;
 }
 
+.div-canvas{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .botones{
     display: flex;
-    flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 10%;
-    left: 10px;
+    top: 0;
+    left: 30%;
+}
+
+.botones button{
+    justify-content: space-around;
 }
 
 .btn-funcionalidad{
@@ -32,29 +42,29 @@ canvas{
     border-radius: 5px;
 }
 
+.btnFiltros{
+    position: absolute;
+    width: 6%;
+    top: 16%;
+    left: 91.5%;
+    background-color: rgb(90, 100, 100);
+}
+.esconder{
+    display: none;
+}
+
+.activarFiltros{
+    width: 80px;
+    border-radius: 10px;
+    cursor: pointer;
+    position: absolute;
+    top: 10%;
+    left: 92%;
+}
+
 .btn-filtro{
     width: 90px;
     border-radius: 50px;
-}
-
-.iconos{
-    width: 70%;
-    height: 70%;
-}
-
-label .iconos{
-    width: 40px;
-    height: 40px;
-}
-
-#labelFile{
-    border: 1px solid rgba(46, 46, 46, 0.536);
-    margin: 10px;
-    cursor: pointer;
-}
-
-#file{
-    display: none;
 }
 
 .tamano-pen{
@@ -69,7 +79,7 @@ label .iconos{
     align-items: center;
     width: 20px;
     height: 20px;
-    border: 1px solid black;
+    padding: 1px;
     margin: 5px;
     cursor: pointer;
     border-radius: 50%;
@@ -84,9 +94,29 @@ label .iconos{
 }
 
 input::-webkit-inner-spin-button {
-   
     appearance: none;
     margin: 0; 
+}
+
+.iconos{
+    width: 70%;
+    height: 70%;
+}
+
+label .iconos{
+    width: 40px;
+    height: 40px;
+}
+
+#labelFile{
+    margin: 15px 5px 5px;
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+}
+
+#file{
+    display: none;
 }
 
 #inputColor{
