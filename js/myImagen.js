@@ -82,6 +82,7 @@ class MyImagen{
         }
     }
 
+    // a cada pixel lo igualamos a color negativo correspondiente haciendo la resta, 255 menos el valor actual del mismo
     filtroNegativo(imageData,pixel){
         for (let i = 0; i < pixel.length; i+=4) {
             pixel[i ] = 255 - pixel[i]; // r
@@ -91,6 +92,7 @@ class MyImagen{
         this.agregarFiltro(imageData);
     }
 
+    // cada vez que entramos en la funcion, recorremos todos los pixeles y a cada uno lo aumentamos en 5
     filtroBrillo(imageData,pixel){
         for (let i = 0; i < pixel.length; i++) { 
             pixel[i] = pixel[i] +5; // r
@@ -100,6 +102,7 @@ class MyImagen{
         this.agregarFiltro(imageData);
     }
     
+    // recorremos los pixeles de la imagen, obtenemos el promedio entre los pixeles r g y b , y a cada pixel lo igualamos al promedio
     filtroGrices(imageData,pixel){
         for (let i = 0; i < pixel.length; i++) {
             let r =   pixel[i * 4];
@@ -127,6 +130,7 @@ class MyImagen{
         this.agregarFiltro(imageData);
     }
 
+    // obtenemos el promedio de los pixeles r,g y b, y si este valor es mayor a 128, a cada pixel lo igualamos a 255 (lo hacemos blanco), sino los igualamos a 0 (lo hacemos negro)
     filtroBinarizacion(imageData,pixel){
         for (let i = 0; i < pixel.length; i++) {
             let r =   pixel[i * 4];

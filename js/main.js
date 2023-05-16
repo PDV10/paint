@@ -19,7 +19,6 @@ let btnAumentar = document.querySelector(".aumentar");
 let btnDisminuir= document.querySelector(".disminuir");
 //obtengo todos los botones de filtro
 let filtros = document.querySelectorAll(".btn-filtro");
-// si se hace click en el boton de mostrar filtros se hace toggle a la clase esconder
 
 // se agrega la clase esconder filtro (para que se cierren cuando aprentamos otro boton)
 function esconderFiltros(){
@@ -28,6 +27,7 @@ function esconderFiltros(){
     });
 }
 
+// se elimina la clase esconder filtro (para que se muestren)
 function mostrarFiltros(){
     filtros.forEach(filtro => {
         filtro.classList.remove("esconder");
