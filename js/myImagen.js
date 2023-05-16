@@ -248,8 +248,24 @@ class MyImagen{
     }
 
 
-    filtroX(){
+    filtroSaturacion(imageData,pixel){
+        for (let i = 0; i < pixel.length; i++) {
+            let r =   pixel[i * 4];
+            let g =   pixel[i * 4 + 1];
+            let b =  pixel[i * 4 + 2];
+            let predominante = Math.max(r,g,b);
 
+            if(r == predominante){
+                pixel[i * 4] = pixel[i * 4] + 40;
+            }
+            if(g == predominante){
+                pixel[i * 4 + 1] = pixel[i * 4 + 1] + 40;
+            }
+            if(b == predominante){
+                pixel[i * 4 + 2] = pixel[i * 4 + 2] + 40;
+            }
+        }
+        this.agregarFiltro(imageData);
     }
 }
 

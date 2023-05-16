@@ -20,23 +20,23 @@ let btnDisminuir= document.querySelector(".disminuir");
 //obtengo todos los botones de filtro
 let filtros = document.querySelectorAll(".btn-filtro");
 // si se hace click en el boton de mostrar filtros se hace toggle a la clase esconder
-let activarFiltros = document.querySelector(".activarFiltros").addEventListener("click", ()=>{
-    filtros.forEach(filtro => {
-        filtro.classList.toggle("esconder");
-    });
-});
 
 // se agrega la clase esconder filtro (para que se cierren cuando aprentamos otro boton)
-function esconderfiltros(){
+function esconderFiltros(){
     filtros.forEach(filtro => {
         filtro.classList.add("esconder");
+    });
+}
+
+function mostrarFiltros(){
+    filtros.forEach(filtro => {
+        filtro.classList.remove("esconder");
     });
 }
 
 //cambiar el grosor del lapiz desde el input number
 penSize.addEventListener('change', ()=>{
     grosor = parseInt(penSize.value);
-    esconderfiltros();
 })
 
 //aumentar el grosor del lapiz desde boton
@@ -45,7 +45,6 @@ btnAumentar.addEventListener('click', ()=>{
         grosor += 5;
     }
     penSize.value = grosor;
-    esconderfiltros();
 });
 
 //disminuir el grosor del lapiz desde boton
@@ -54,13 +53,11 @@ btnDisminuir.addEventListener("click", ()=>{
         grosor -= 2;
          penSize.value = grosor;
     }
-    esconderfiltros();
 }); 
 
 // cambiar color del trazo mediante el input
 inputColor.addEventListener('input', ()=>{
     colorTrazo = inputColor.value;
-    esconderfiltros();
     
 })
 
@@ -69,7 +66,6 @@ canvas.addEventListener('mousedown', (e)=>{
     mouseUp = false;
     mouseDown = true;
     MiLapiz = new lapiz(e.layerX, e.layerY, colorTrazo, ctx, 'black',grosor);
-    esconderfiltros();
     
 });
 
@@ -102,7 +98,6 @@ document.getElementById("pen").addEventListener("click", ()=>{
     }
     btnDibujar = true;
     colorTrazo = inputColor.value;
-    esconderfiltros();
 }) 
 
 // boton goma de borrar
@@ -114,13 +109,13 @@ document.getElementById("borrar").addEventListener("click", ()=>{
     btnBorrar = true;
     colorTrazo = 'white';
     penSize.value = grosor;
-    esconderfiltros();
 }) 
 
 // boton limpiar canvas
 document.getElementById("limpiar").addEventListener("click", ()=>{
     main();
     miImagen  = null;
+    esconderFiltros();
 }) 
 
 //boton guardar
@@ -130,6 +125,7 @@ document.getElementById("guardar").addEventListener("click", ()=>{
     link.href = canvas.toDataURL();
     link.click();
     main();
+    esconderFiltros()
 }) 
 
 
@@ -138,14 +134,13 @@ file.addEventListener("change", e=>{
     miImagen = new MyImagen(ctx,canvasWidth,canvasHeight,null,null)
     miImagen.cargarImagen(e);
     file.value = null;
-    esconderfiltros();
+    mostrarFiltros();
 });
 
 // iniciar canvas de blanco
 function main(){
     ctx.fillStyle = 'white';  
     ctx.fillRect(0,0,canvasWidth,canvasHeight);
-    esconderfiltros();
 }
 
 // aplicar filtro
@@ -201,8 +196,9 @@ function aplicarFiltro(id){
             miImagen.ultimoFiltro = "filtroBordes";
             miImagen.filtroBordes(imageData,pixel);
         }  
-        if(id == "filtroX"){
-            miImagen.filtroX();
+        if(id == "filtroSaturacion"){/* 
+            miImagen.ultimoFiltro = "filtroSaturacion"; */
+            miImagen.filtroSaturacion(imageData,pixel);
         }   
         if(id == "quitarFiltro"){
             miImagen.quitarFiltro();
